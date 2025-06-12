@@ -1,0 +1,10 @@
+FROM python:3.12-slim
+
+WORKDIR /app
+
+COPY dependencies/requirements.prod.txt .
+RUN pip install --no-cache-dir -r requirements.prod.txt
+
+COPY src/ .
+
+CMD ["fastapi", "run", "app.py", "--port", "8000", "--host", "0.0.0.0"]

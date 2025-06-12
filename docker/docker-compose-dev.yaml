@@ -1,0 +1,26 @@
+services:
+  redis:
+    image: redis:latest
+    container_name: redis_dev
+    ports:
+      - "6379:6379"
+  hello-app:
+    build:
+      context: ../
+      dockerfile: Dockerfile.dev
+    container_name: hello-app
+    ports:
+      - "8000:8000"
+    env_file:
+      - ../env/dev.env
+    depends_on:
+      - redis
+      - fluentd
+  fluentd:
+    image: fluent/fluentd:v1.14-1
+    container_name: fluentd_dev
+    ports:
+      - "24224:24224"
+      - "24224:24224/udp"
+    env_file:
+      - ../env/dev.env
